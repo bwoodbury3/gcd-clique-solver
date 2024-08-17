@@ -1,28 +1,44 @@
+# Overview
+
+This project is a sandbox of NP-Complete problems.
+
+Generic usage:
+```
+$ python src/main.py <problem> <algorithm> [ARGS...]
+```
+
+Where:
+* `problem` is a class of NP-Complete problem, (i.e. `clique`)
+* `algorithm` is an algorithm implementation that solves the problem (see `src/algos`)
+
+
+# `clique`
+
+## Problem Statement
+
+The version of the problem (which [Wikipedia](https://en.wikipedia.org/wiki/Clique_problem) calls `k-clique`) is described below:
+
+> A clique in a graph G is a complete subgraph of G. That is, it is a subset K of the vertices such that every two vertices in K are the two endpoints of an edge in G.
+
+> In the k-clique problem, the input is an undirected graph and a number k. The output is a clique with k vertices, if one exists, or a special value indicating that there is no k-clique otherwise.
+
+In other words, the solvers take the form:
+
+```python
+def clique(G, k):
+    """
+    Find a subgraph of G with k vertices where each vertex is connected to
+    every other vertex. Return the indices of the subgraph if one is found, or
+    None.
+
+    Args:
+        G: The graph.
+        k: The size of the clique.
+    """
+```
+
 <details>
   <summary>clique1: An implementation of the NP-Complete Clique Problem using prime factorization.</summary>
-
-  ## Problem Statement
-
-  The version of the problem (which [Wikipedia](https://en.wikipedia.org/wiki/Clique_problem) calls `k-clique`) is described below:
-
-  > A clique in a graph G is a complete subgraph of G. That is, it is a subset K of the vertices such that every two vertices in K are the two endpoints of an edge in G.
-
-  > In the k-clique problem, the input is an undirected graph and a number k. The output is a clique with k vertices, if one exists, or a special value indicating that there is no k-clique otherwise.
-
-  In other words, the library solves this problem:
-
-  ```python
-  def clique(G, k):
-      """
-      Find a subgraph of G with k vertices where each vertex is connected to
-      every other vertex. Return the indices of the subgraph if one is found, or
-      None.
-
-      Args:
-          G: The graph.
-          k: The size of the clique.
-      """
-  ```
 
   ## Theory
 
@@ -80,10 +96,9 @@
   On my 6 year old macbook, I can run the `datasets/5000x20000_8clique.txt` (5,000 vertices x 20,000 edges) testcase in 40s
 
   ```
-  $ python clique1.py datasets/5000x20000_8clique.txt
+  $ python src/main.py clique clique1 --filename=datasets/5000x20000_8clique.txt -k 8
   Total number of divisors: 31176199
   [83, 899, 1480, 2629, 2899, 3776, 4354, 4911]
-  RUNTIME: 39.30s
   ```
 
 </details>
@@ -97,21 +112,18 @@
 
   Example with 10 million vertices and 100 million edges, and one clique of size 8 hidden in the graph.
   ```
-  elenas-mbp:primes elena$ python clique2.py
+  $ python src/main.py clique clique2 --add-clique=6 --vertices=1000 --edges=10000 -k 6
   ...
   {{
       "vertices": [
-          3776,
-          5008,
-          9392,
-          8453,
-          2343,
-          9823,
-          8349,
-          2321
+          626,
+          647,
+          84,
+          480,
+          926,
+          240
       ]
   }}
-  RUNTIME: 1.66s
   ```
 
 </details>
