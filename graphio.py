@@ -62,6 +62,6 @@ def write_to_file(filename: str, vertices: GraphVertices, edges: GraphEdges):
 
 
 if __name__ == "__main__":
-    v, e = read_from_file("datasets/5000x20000.txt")
+    v, e = generate_random_graph(20_000, 200_000)
     add_clique(v, e, 8)
-    write_to_file("datasets/5000x20000_8clique.txt", v, e)
+    write_to_file("datasets/20000x200000_8clique.txt", v, e)
