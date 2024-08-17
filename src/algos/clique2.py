@@ -6,7 +6,13 @@ import json
 import math
 import time
 
-from graph_util import add_clique, generate_random_graph, GraphVertices, GraphEdges
+from util.graphs import (
+    add_clique,
+    generate_random_graph,
+    GraphVertices,
+    GraphEdges,
+    read_from_file,
+)
 
 
 class Clique:
@@ -29,7 +35,7 @@ class Clique:
         return str(self)
 
 
-def clique(vertices: GraphVertices, edges: GraphEdges, k: int) -> list[Clique]:
+def solve(vertices: GraphVertices, edges: GraphEdges, k: int) -> list[Clique]:
     """
     Return all cliques of size k found in the graph.
 
@@ -71,23 +77,3 @@ def clique(vertices: GraphVertices, edges: GraphEdges, k: int) -> list[Clique]:
         cliques = new_cliques
 
     return cliques
-
-
-if __name__ == "__main__":
-    print("Loading graph")
-
-    # Uncomment this to read in data from a file
-    # filename = sys.argv[1]
-    # v, e = read_from_file(filename)
-
-    v, e = generate_random_graph(10_000, 100_000)
-    add_clique(v, e, 8)
-
-    print("Finding clique")
-
-    t0 = time.monotonic()
-    ans = clique(v, e, 8)
-    print(ans if ans else "No clique found")
-    t1 = time.monotonic()
-
-    print(f"RUNTIME: {t1 - t0:.2f}s")

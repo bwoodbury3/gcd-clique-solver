@@ -7,9 +7,8 @@ import math
 import sys
 import time
 
-from graphio import read_from_file
-from graph_util import GraphVertices, GraphEdges
-from prime_util import divisors_from_prime_factors, prime_list
+from util.graphs import GraphVertices, GraphEdges, read_from_file
+from util.primes import divisors_from_prime_factors, prime_list
 
 
 class PrimeGraph:
@@ -88,7 +87,7 @@ class PrimeGraph:
         return True
 
 
-def clique(vertices: GraphVertices, edges: GraphEdges, k: int) -> list[int]:
+def solve(vertices: GraphVertices, edges: GraphEdges, k: int) -> list[int]:
     """
     Return a clique of size k if one exists, else None.
 
@@ -157,15 +156,3 @@ def clique(vertices: GraphVertices, edges: GraphEdges, k: int) -> list[int]:
     assert graph.is_clique(clique)
 
     return [graph.p2v[v] for v in clique]
-
-
-if __name__ == "__main__":
-    filename = sys.argv[1]
-    vertices, edges = read_from_file(filename)
-
-    t0 = time.monotonic()
-    ans = clique(vertices, edges, 8)
-    print(ans if ans else "No clique found")
-    t1 = time.monotonic()
-
-    print(f"RUNTIME: {t1 - t0:.2f}s")
