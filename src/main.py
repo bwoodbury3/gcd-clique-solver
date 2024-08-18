@@ -1,13 +1,7 @@
 import argparse
 
 from algos import clique_solvers
-from util.graphs import (
-    add_clique,
-    generate_random_graph,
-    GraphVertices,
-    GraphEdges,
-    read_from_file,
-)
+from util import graphs
 
 
 def add_solvers(
@@ -54,15 +48,15 @@ def parse_graph_args(func: callable):
     def wrapper(args: argparse.Namespace):
         # Load the graph.
         if args.filename:
-            v, e = read_from_file(args.filename)
+            v, e = graphs.read_from_file(args.filename)
         elif args.vertices and args.edges:
-            v, e = generate_random_graph(args.vertices, args.edges)
+            v, e = graphs.generate_random_graph(args.vertices, args.edges)
         else:
             raise ValueError(f"Must provide either --filename or --vertices & --edges")
 
         # Add the clique to the graph if requested
-        if args.add_clique:
-            add_clique(v, e, args.add_clique)
+        if args.graphs.add_clique:
+            graphs.add_clique(v, e, args.graphs.add_clique)
 
         func(v, e, args)
 
@@ -71,8 +65,8 @@ def parse_graph_args(func: callable):
 
 @parse_graph_args
 def run_clique_solver(
-    vertices: GraphVertices,
-    edges: GraphEdges,
+    vertices: graphs.GraphVertices,
+    edges: graphs.GraphEdges,
     args: argparse.Namespace,
 ) -> None:
     """

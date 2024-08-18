@@ -1,0 +1,302 @@
+100
+200
+!ve kg !rd
+mh !ne vd
+vg !qh zb
+!t !zc !sd
+!ec sg wc
+!kh bf xf
+xc oh vg
+wc !te !df
+nd dg !b
+kg !sb wf
+h !qb !ec
+!bg tb cb
+!se sf !qe
+ob ed !og
+!i !zf dc
+qc re !se
+!hc nf !pg
+db !cc a
+!fg og !rh
+!zb !yb a
+s !gf !ye
+!m mf re
+cg nd !zg
+le x dd
+kf rf eh
+!id !je !lf
+!k ie !ye
+!ke vb !qb
+pg jc !jg
+if !lf dd
+nf !dh !od
+!re qc !qg
+rf !td nc
+tg bc !qb
+ze !se !qe
+!tc t df
+xe !sb db
+!cb cc gc
+!me !uc !oc
+!rh hb !ed
+!dc !af ge
+b !rc !gf
+!yb !nb !mf
+!td zg wc
+ch kd fg
+!jf ph !je
+!o !lg !qc
+ah ff !gf
+fc vb !l
+!ig kb !wd
+kh !yb bh
+lb !ac !dd
+!ed !id tb
+!g !zb zg
+!xb ke !fg
+tf ed !uf
+jh !mb !db
+mh !kc vd
+!ub rd !zc
+kb cf nb
+ue !hh ac
+mf ah !ub
+!og !id !gb
+tg !kb !ye
+!fe gf vd
+xd sg !gh
+!bb !cg y
+!oh lh ad
+bf !tb tb
+!se be !if
+!r !yb !ng
+!xc !ge !pe
+!yd !hb !rh
+yc fc pg
+z ve !cb
+tg !jd jg
+fh !yc !af
+dh !ec !se
+!ge !hh !ob
+lg !xg d
+!le !yd !xe
+df se !ae
+!ee !ab pe
+nh !qb le
+qc pb t
+zg !ab !lh
+ig !me ee
+gh of !gc
+!y ec !u
+qf ue r
+kd !ad !fd
+!dg !sd kh
+hh zb me
+fh ed !q
+oe !cb ze
+zd !ef tg
+bf qh wf
+yd if n
+!mc kg !xg
+!ub rg !sd
+a True
+b True
+c False
+d True
+e False
+f True
+g False
+h True
+i False
+j False
+k False
+l False
+m False
+n True
+o False
+p False
+q True
+r False
+s False
+t True
+u False
+v True
+w False
+x True
+y True
+z False
+ab False
+bb False
+cb False
+db True
+eb False
+fb True
+gb True
+hb True
+ib False
+jb False
+kb False
+lb True
+mb False
+nb True
+ob False
+pb True
+qb False
+rb False
+sb True
+tb False
+ub False
+vb True
+wb True
+xb False
+yb False
+zb True
+ac False
+bc True
+cc False
+dc False
+ec True
+fc False
+gc True
+hc True
+ic False
+jc True
+kc True
+lc True
+mc True
+nc False
+oc False
+pc False
+qc True
+rc True
+sc True
+tc True
+uc False
+vc True
+wc True
+xc True
+yc False
+zc False
+ad True
+bd True
+cd False
+dd True
+ed True
+fd False
+gd True
+hd False
+id False
+jd False
+kd True
+ld False
+md False
+nd True
+od False
+pd True
+qd False
+rd True
+sd False
+td False
+ud False
+vd True
+wd False
+xd True
+yd False
+zd True
+ae False
+be False
+ce True
+de False
+ee False
+fe False
+ge False
+he True
+ie True
+je False
+ke False
+le False
+me True
+ne False
+oe False
+pe False
+qe False
+re True
+se False
+te True
+ue True
+ve False
+we False
+xe False
+ye False
+ze True
+af False
+bf True
+cf True
+df True
+ef False
+ff True
+gf False
+hf False
+if True
+jf True
+kf True
+lf False
+mf True
+nf True
+of True
+pf False
+qf False
+rf True
+sf False
+tf True
+uf True
+vf True
+wf True
+xf True
+yf False
+zf False
+ag False
+bg False
+cg False
+dg False
+eg False
+fg True
+gg False
+hg False
+ig True
+jg True
+kg True
+lg True
+mg True
+ng False
+og False
+pg True
+qg True
+rg False
+sg True
+tg True
+ug True
+vg True
+wg True
+xg True
+yg False
+zg False
+ah True
+bh True
+ch False
+dh False
+eh True
+fh False
+gh False
+hh False
+ih False
+jh True
+kh True
+lh False
+mh True
+nh True
+oh False
+ph False
+qh False
+rh False

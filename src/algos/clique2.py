@@ -4,15 +4,8 @@ Trivial clique solver.
 
 import json
 import math
-import time
 
-from util.graphs import (
-    add_clique,
-    generate_random_graph,
-    GraphVertices,
-    GraphEdges,
-    read_from_file,
-)
+from util.graphs import GraphVertices, GraphEdges
 
 
 class Clique:

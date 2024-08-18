@@ -1,0 +1,22 @@
+10
+10
+!e d a
+!f d a
+e e e
+!j !e !c
+j !b !b
+g h c
+h !i e
+a !b h
+!b f c
+h i j
+a True
+b False
+c False
+d True
+e True
+f False
+g False
+h True
+i True
+j True

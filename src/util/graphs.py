@@ -4,6 +4,8 @@ Basic graph util
 
 import random
 
+from util import fileio
+
 GraphVertices = list[int]
 GraphEdges = list[tuple[int, int]]
 
@@ -43,21 +45,23 @@ def read_from_file(filename: str) -> tuple[GraphVertices, GraphEdges]:
     """
     Read a graph from a file.
 
+    Expected format:
+        n_vertices
+        n_edges
+
+        v0
+        v1
+        ...
+        vN
+
+        vN vM   # Edge0
+        vN vM   # Edge1
+        ...
+
     Args:
         filename: The filename.
     """
-    lines = []
-    with open(filename) as f:
-        for line in f.readlines():
-            # Strip comments
-            if "#" in line:
-                line = line[: line.find("#")]
-
-            # Strip spaces
-            line = line.strip()
-
-            if len(line) != 0:
-                lines.append(line)
+    lines = fileio.read_data_lines(filename)
 
     num_vertices = int(lines[0])
     num_edges = int(lines[1])

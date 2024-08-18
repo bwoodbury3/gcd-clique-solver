@@ -4,10 +4,8 @@ MAIN ENTRYPOINT.
 
 import json
 import math
-import sys
-import time
 
-from util.graphs import GraphVertices, GraphEdges, read_from_file
+from util.graphs import GraphVertices, GraphEdges
 from util.primes import divisors_from_prime_factors, prime_list
 
 
