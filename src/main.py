@@ -1,7 +1,7 @@
 import argparse
 
-from algos import clique_solvers
-from util import graphs
+from algos import clique_solvers, sat_solvers
+from util import graphs, sats
 
 
 def add_solvers(
@@ -63,6 +63,44 @@ def parse_graph_args(func: callable):
     return wrapper
 
 
+def add_sat_args(parser: argparse.ArgumentParser) -> None:
+    """
+    Add argparse args that are relevant to Boolean Satisfiability problem.
+
+    Args:
+        parser: The parser or subparser.
+    """
+    parser.add_argument("--filename", type=str, help="File containing a graph")
+    parser.add_argument(
+        "--expressions", "-e", type=int, help="The number of expressions"
+    )
+    parser.add_argument("--variables", "-v", type=int, help="The number of variables")
+
+
+def parse_sat_args(func: callable):
+    """
+    Run the sat solver.
+
+    Args:
+        args: The args.
+    """
+
+    def wrapper(args: argparse.Namespace):
+        # Load the problem.
+        if args.filename:
+            problem, _ = sats.read_from_file(args.filename)
+        elif args.expressions and args.variables:
+            problem, _ = sats.generate_random_sat(args.expressions, args.variables, 3)
+        else:
+            raise ValueError(
+                f"Must provide either --filename or --expressions and --variables"
+            )
+
+        func(problem, args)
+
+    return wrapper
+
+
 @parse_graph_args
 def run_clique_solver(
     vertices: graphs.GraphVertices,
@@ -81,6 +119,20 @@ def run_clique_solver(
     print(solution)
 
 
+@parse_sat_args
+def run_3sat_solver(problem: sats.SatProblem, args: argparse.Namespace) -> None:
+    """
+    Run the 3-sat solver.
+
+    Args:
+        problem: The 3-sat problem.
+        args: The args.
+    """
+    solution = args.solver(problem)
+    print(f"Problem: {problem}")
+    print(f"Solution: {solution}")
+
+
 def parse_args() -> argparse.Namespace:
     """
     Parse args.
@@ -88,6 +140,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(prog="main.py")
     subparsers = parser.add_subparsers(required=True)
 
+    #### CLIQUE ####
     clique_parser = subparsers.add_parser(
         "clique",
         help="Find a clique of size k in a graph",
@@ -102,6 +155,15 @@ def parse_args() -> argparse.Namespace:
         help="Clique size to search for",
     )
     clique_parser.set_defaults(func=run_clique_solver)
+
+    #### 3-SAT ####
+    sat_parser = subparsers.add_parser(
+        "3sat",
+        help="Find a solution to the boolean expression",
+    )
+    add_solvers(sat_parser, sat_solvers)
+    add_sat_args(sat_parser)
+    sat_parser.set_defaults(func=run_3sat_solver)
 
     return parser.parse_args()
 

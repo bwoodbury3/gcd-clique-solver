@@ -2,9 +2,6 @@
 3-SAT solver.
 """
 
-from dataclasses import dataclass
-import itertools
-
 import typing
 from util import sats
 
@@ -29,7 +26,58 @@ def expression_combos(
             yield key
 
 
-def three_sat(problem: sats.SatProblem) -> sats.AnswerKey:
+def prune_independent_expressions(
+    problem: sats.SatProblem,
+) -> tuple[sats.SatProblem, sats.AnswerKey]:
+    """
+    Return a subproblem + answer key where all of the expressions are independent.
+    """
+
+    # First, track whether a variable appears in the problem. Create a map of vars
+    # to whether they appear as normal or inverted.
+    vars: map[list[bool]] = {}
+    for expression in problem:
+        for var in expression:
+            seen = vars.get(var.name, [False, False])  # [normal, inverted]
+            if var.inverted:
+                seen[1] = True
+            else:
+                seen[0] = True
+            vars[var.name] = seen
+
+    # Next, build a problem where none of the variables in any expression are
+    # independent.
+    pruned_problem: sats.SatProblem = []
+    pruned_key: sats.AnswerKey = {}
+    for expression in problem:
+        independent_var = None
+
+        # Check if any of the variables are independent
+        for var in expression:
+            if vars[var.name].count(True) < 2:
+                independent_var = var.name
+                break
+
+        # If it's independent, add it to the answer key.
+        if independent_var is not None:
+            if vars[var.name][0]:
+                pruned_key[independent_var] = True
+            else:
+                pruned_key[independent_var] = False
+
+        # Otherwise, the expression is not independent and cannot be discarded.
+        else:
+            pruned_problem.append(expression)
+
+    print(
+        f"Pruned {len(problem) - len(pruned_problem)} expressions and "
+        f"{2**len(pruned_key)} possible answer keys."
+    )
+
+    return pruned_problem, pruned_key
+
+
+def solve(problem: sats.SatProblem) -> sats.AnswerKey:
     """
     Solve 3-sat.
 
@@ -37,8 +85,11 @@ def three_sat(problem: sats.SatProblem) -> sats.AnswerKey:
         problem: The SAT problem.
     """
 
+    # Prune the problem of any indepdent expressions.
+    problem, key = prune_independent_expressions(problem)
+
     # Maintain a list of all answer keys which solve the cumulative problem.
-    answer_keys: list[sats.AnswerKey] = [{}]
+    answer_keys: list[sats.AnswerKey] = [key]
 
     for expression in problem:
         new_answer_keys = []
@@ -69,18 +120,8 @@ def three_sat(problem: sats.SatProblem) -> sats.AnswerKey:
 
         print(f"Num valid answer keys: {len(new_answer_keys)}")
         answer_keys = new_answer_keys
-    return answer_keys
 
-
-if __name__ == "__main__":
-    problem, answer_key = sats.generate_random_sat(1000, 25, 3)
-
-    print("Solving...")
-    keys = three_sat(problem)
-    print(problem)
-    print("---")
-    print(keys[0])
-
-    # Sanity check
-    for key in keys:
-        assert sats.evaluate(problem, key)
+    if answer_keys:
+        return answer_keys[0]
+    else:
+        return None
