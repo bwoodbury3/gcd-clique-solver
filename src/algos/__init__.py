@@ -1,4 +1,4 @@
-from algos import clique1, clique2, three_sat1, three_sat2
+from algos import clique1, clique2, three_sat1, three_sat2, tsp1
 
 clique_solvers = {
     "clique1": clique1.solve,
@@ -14,4 +14,11 @@ sat_solvers = {
 }
 """
 3-SAT solver algorithms.
+"""
+
+tsp_solvers = {
+    "tsp1": tsp1.solve,
+}
+"""
+Traveling salesman solver algorithms.
 """

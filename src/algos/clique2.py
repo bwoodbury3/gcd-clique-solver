@@ -38,7 +38,7 @@ def solve(vertices: GraphVertices, edges: GraphEdges, k: int) -> list[Clique]:
         k: The clique size
     """
     m_neighbors = {v: [] for v in vertices}
-    for v0, v1 in edges:
+    for v0, v1, _ in edges:
         m_neighbors[v0].append(v1)
         m_neighbors[v1].append(v0)
 
@@ -69,4 +69,7 @@ def solve(vertices: GraphVertices, edges: GraphEdges, k: int) -> list[Clique]:
                 )
         cliques = new_cliques
 
-    return cliques
+    if cliques:
+        clique = cliques.pop()
+        return clique.vertices
+    return None

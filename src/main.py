@@ -1,6 +1,6 @@
 import argparse
 
-from algos import clique_solvers, sat_solvers
+from algos import clique_solvers, sat_solvers, tsp_solvers
 from util import graphs, sats
 
 
@@ -55,7 +55,7 @@ def parse_graph_args(func: callable):
             raise ValueError(f"Must provide either --filename or --vertices & --edges")
 
         # Add the clique to the graph if requested
-        if args.graphs.add_clique:
+        if args.add_clique:
             graphs.add_clique(v, e, args.graphs.add_clique)
 
         func(v, e, args)
@@ -119,6 +119,26 @@ def run_clique_solver(
     print(solution)
 
 
+@parse_graph_args
+def run_tsp_solver(
+    vertices: graphs.GraphVertices,
+    edges: graphs.GraphEdges,
+    args: argparse.Namespace,
+) -> None:
+    """
+    Run the traveling salesman solver.
+
+    Args:
+        vertices: The vertices of the graph.
+        edges: The edges of the graph.
+        args: The args.
+    """
+    graph = graphs.Graph(vertices, edges)
+    solution, distance = args.solver(graph, args.cities)
+    print(f"Solution: {solution}")
+    print(f"Distance: {distance}")
+
+
 @parse_sat_args
 def run_3sat_solver(problem: sats.SatProblem, args: argparse.Namespace) -> None:
     """
@@ -155,6 +175,22 @@ def parse_args() -> argparse.Namespace:
         help="Clique size to search for",
     )
     clique_parser.set_defaults(func=run_clique_solver)
+
+    #### Traveling Salesman ####
+    tsp_parser = subparsers.add_parser(
+        "tsp",
+        help="Find the shortest cycle around N vertices (traveling salesman)",
+    )
+    add_solvers(tsp_parser, tsp_solvers)
+    add_graph_args(tsp_parser)
+    tsp_parser.add_argument(
+        "--cities",
+        "-c",
+        nargs="+",
+        type=int,
+        help="The cities to traverse",
+    )
+    tsp_parser.set_defaults(func=run_tsp_solver)
 
     #### 3-SAT ####
     sat_parser = subparsers.add_parser(

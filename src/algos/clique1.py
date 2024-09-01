@@ -46,7 +46,7 @@ class PrimeGraph:
 
         # Save off the same vertex/edge list using the new prime mapping.
         self.pvertices = [self.v2p[v] for v in vertices]
-        self.pedges = [(self.v2p[v0], self.v2p[v1]) for v0, v1 in edges]
+        self.pedges = [(self.v2p[v0], self.v2p[v1]) for v0, v1, _ in edges]
 
         # Construct a graph where each vertex is mapped to a composite number
         # whose prime factors are the product of reachable edges.

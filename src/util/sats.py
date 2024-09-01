@@ -58,7 +58,11 @@ def evaluate_expression(expression: BooleanExpression, answer_key: AnswerKey) ->
     """
     exp_result = False
     for var in expression:
-        exp_result = exp_result or var.eval(answer_key[var.name])
+        # If the variable is not in the answer key, do not include it. This
+        # implicitly assumes it will evaluate to false for this expression and
+        # therefore doesn't matter for the solution.
+        if var.name in answer_key:
+            exp_result = exp_result or var.eval(answer_key[var.name])
     return exp_result
 
 

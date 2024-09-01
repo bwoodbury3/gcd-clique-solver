@@ -200,3 +200,37 @@ def solve(problem: sats.SatProblem) -> sats.AnswerKey:
   4. Run the `3sat1` algorithm above for the subproblem that remains and append it to the solution from step 2.
 
 </details>
+
+
+# Traveling Salesman
+
+## Problem Statement
+
+The Traveling Salesman Problem (TSP) is a problem that tries to find the minimum route between a series of cities. Given a graph `G` of `V` cities and `E` roads between those cities, the problem takes a list of `K` cities (a subset of `V`) and asks what the shortest loop is through the cities. The NP-Complete version of this problem also inputs a distance `L` and asks to return a route less than that distance.
+
+Solutions to this problem take the form:
+
+```python
+def solve(graph: graphs.Graph, vertices: list[int]) -> list[int]:
+    """
+    Solve the travling salesman problem.
+
+    Args:
+        graph: The graph.
+        vertices: The vertices to visit.
+
+    Returns: the order of cities to visit.
+    """
+```
+
+<details>
+  <summary><b>tsp1</b>: Brute force</summary>
+
+  A first step in solving Traveling Salesman is to find the shortest distance between each pair of nodes (using DFS). You could then construct a new fully connected graph (clique) with only the relevant `K` vertices, and an edge between each vertex pair representing the shortest distance that was found between them. The new problem asks what the shortest cycle is that visits every vertex.
+
+  The preprocessing step looks like this:
+  1. For each relevant vertex in the TSP problem, run a DFS on the entire graph and record the distance to all other `K` TSP vertices.
+  2. Build a new graph that has these `K` vertices, and edges from those `K` vertices to all other `K` vertices, with weights equal to the distances found in step 1.
+
+  Lastly, build all combinations of the `K` vertices (`O(K!)`) and record which one has the shortest path.
+</details>
