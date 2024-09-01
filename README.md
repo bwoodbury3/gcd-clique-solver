@@ -38,7 +38,7 @@ def clique(G, k):
 ```
 
 <details>
-  <summary>clique1: An implementation of the NP-Complete Clique Problem using prime factorization.</summary>
+  <summary><b>clique1</b>: An implementation of the NP-Complete Clique Problem using prime factorization.</summary>
 
   ## Theory
 
@@ -106,7 +106,7 @@ def clique(G, k):
 ---
 
 <details>
-  <summary>clique2: Trivial (but very fast) solver of the same problem.</summary>
+  <summary><b>clique2</b>: Trivial (but very fast) solver of the same problem.</summary>
 
   This algorithm builds up cliques one by one. Find all cliques of size `N=2`, and then use that list to build all cliques of size `N=3`, etc.
 
@@ -125,5 +125,78 @@ def clique(G, k):
       ]
   }}
   ```
+
+</details>
+
+
+# 3-Sat
+
+## Problem Statement
+
+The Boolean Satisfiability Problem involves finding values for a set of boolean variables that cause a boolean expression to evaluate to True. Its simplified version `3-sat` is a boolean expression consisting of a chain of OR statements ANDed together, with a maximum of 3 boolean variables per statement. For example:
+
+    (A or B or C) and (!A or B or !C) and (!A or !B or !C)
+
+    A = True
+    B = True
+    C = False
+
+Solutions to this problem take the form:
+
+```python
+def solve(problem: sats.SatProblem) -> sats.AnswerKey:
+    """
+    Given a list of boolean expressions, find a solution that evaluates the
+    expression to True.
+
+    Args:
+        problem: The SAT problem.
+
+    Returns: A map of variables to their True/False value.
+    """
+```
+
+<details>
+  <summary><b>3sat1</b>: A trivial brute-force implementation</summary>
+
+  This algorithm builds up a valid solution one expression at a time, keeping track of all of the possible solutions at each step.
+
+  Brief description:
+
+  1. Initialize a list of valid solutions `S` and initialize it with one empty solution (no variables, no values)
+  2. For each expression:
+        1. Compute all of the valid value combinations `C` that satisfy this expression.
+        2. For each existing solution `S` and each combination `C` from above, update `S` to be the combination of `S * C`, throwing out any S & C pairs that are incompatible.
+  3. Return the list of remaining valid solutions, if any.
+
+</details>
+
+---
+
+<details>
+  <summary><b>3sat2</b>: Optimizing-away independent solutions</summary>
+
+  This algorithm builds off of `3sat1` except attempts to prune "independent" expressions.
+
+  ## Brief Explanation
+
+  Consider an expression:
+
+      (A or B or C) and (B or !C or !D) and (!B or C or !D)
+
+  `A` only appears once in the entire problem, so we can set it to True right away and eliminate any possibilities. There might be a solution where `A` is `False`, but it doesn't matter. If there are any solutions at all, oen of them will set `A=True`.
+
+  Because of this, we can actually just assume that entire expression is also `True` and so will be irrelevant to the rest of hte solution. Setting `A=True` means we can delete this expression and just solve the rest of the problem.
+
+  We can actually do better than that though. `D` only appears in that problem as `!D`. Even though it appears in multiple expressions, and because it always appears in the same form, we can set `D=False` as part of the same solution. Using the same logic as above, we can also remove those expressions and just solve the rest. A variable that only appears in one way (either positive or negative) is _independent_.
+
+  To summarize - we can delete all expressions that have at least 1 independent variable and just solve the subproblem that remains.
+
+  ## Algorithm
+
+  1. For each variable in each expression, record whether that variable appears as a positive or a negative.
+  2. List out the variables that only appear as either positive OR negative (not both). Record them in a solution map corresponding to their positive/negative value.
+  3. For each expression, if it contains _any_ independent variables, delete it.
+  4. Run the `3sat1` algorithm above for the subproblem that remains and append it to the solution from step 2.
 
 </details>

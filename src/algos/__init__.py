@@ -9,8 +9,8 @@ Clique solver algorithms.
 """
 
 sat_solvers = {
-    "3-sat1": three_sat1.solve,
-    "3-sat2": three_sat2.solve,
+    "3sat1": three_sat1.solve,
+    "3sat2": three_sat2.solve,
 }
 """
 3-SAT solver algorithms.
