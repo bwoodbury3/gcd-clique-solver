@@ -5,6 +5,7 @@ MAIN ENTRYPOINT.
 import json
 import math
 
+from util import profile
 from util.graphs import GraphVertices, GraphEdges
 from util.primes import divisors_from_prime_factors, prime_list
 
@@ -68,6 +69,7 @@ class PrimeGraph:
         o = {"v2p": self.v2p, "edges": self.pedges, "graph": self.m}
         return json.dumps(o, indent=4)
 
+    @profile.timer("PrimeGraph.is_clique")
     def is_clique(self, pvertices: GraphVertices) -> bool:
         """
         Returns whether the list of vertices forms a clique.
@@ -85,6 +87,7 @@ class PrimeGraph:
         return True
 
 
+@profile.timer("clique1.solve")
 def solve(vertices: GraphVertices, edges: GraphEdges, k: int) -> list[int]:
     """
     Return a clique of size k if one exists, else None.

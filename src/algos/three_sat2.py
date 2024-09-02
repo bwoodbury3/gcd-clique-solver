@@ -3,9 +3,10 @@
 """
 
 import typing
-from util import sats
+from util import profile, sats
 
 
+@profile.timer("three_sat2.expression_combos")
 def expression_combos(
     expression: sats.BooleanExpression,
 ) -> typing.Iterable[sats.AnswerKey]:
@@ -26,6 +27,7 @@ def expression_combos(
             yield key
 
 
+@profile.timer("three_sat2.prune_independent_expressions")
 def prune_independent_expressions(
     problem: sats.SatProblem,
 ) -> tuple[sats.SatProblem, sats.AnswerKey]:
@@ -77,6 +79,7 @@ def prune_independent_expressions(
     return pruned_problem, pruned_key
 
 
+@profile.timer("three_sat2.solve")
 def solve(problem: sats.SatProblem) -> sats.AnswerKey:
     """
     Solve 3-sat.

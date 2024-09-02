@@ -5,7 +5,7 @@ Traveling salesman solver.
 from util import graphs, profile
 
 
-@profile.timer
+@profile.timer("tsp1.solve")
 def solve(graph: graphs.Graph, vertices: list[int]) -> list[int]:
     """
     Solve the travling salesman problem.
@@ -51,11 +51,3 @@ def solve(graph: graphs.Graph, vertices: list[int]) -> list[int]:
             best_solution = solution
 
     return best_solution, best_score
-
-
-if __name__ == "__main__":
-    v, e = graphs.read_from_file("datasets/5000x20000.txt")
-    graph = graphs.Graph(v, e)
-    sol, score = solve(graph, vertices=[0, 1, 3, 7, 18, 19, 2000], profile=True)
-    print(f"Score: {score}")
-    print(sol)

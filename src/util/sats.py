@@ -4,7 +4,7 @@ Utils for boolean satisfiability.
 
 import random
 
-from util import fileio
+from util import fileio, profile
 
 
 class BooleanVariable:
@@ -48,6 +48,7 @@ def _variable_name(n: int) -> str:
     return name
 
 
+@profile.timer("sats.evaluate_expression")
 def evaluate_expression(expression: BooleanExpression, answer_key: AnswerKey) -> bool:
     """
     Evaluate a single expression.
@@ -66,6 +67,7 @@ def evaluate_expression(expression: BooleanExpression, answer_key: AnswerKey) ->
     return exp_result
 
 
+@profile.timer("sats.evaluate")
 def evaluate(problem: SatProblem, answer_key: AnswerKey) -> bool:
     """
     Evaluate a problem with an answer key. Return True if the boolean
@@ -84,6 +86,7 @@ def evaluate(problem: SatProblem, answer_key: AnswerKey) -> bool:
     return result
 
 
+@profile.timer("sats.generate_random_sat")
 def generate_random_sat(
     num_expressions: int,
     num_variables: int,
@@ -123,6 +126,7 @@ def generate_random_sat(
     return problem, answer_key
 
 
+@profile.timer("sats.read_from_file")
 def read_from_file(filename: str) -> tuple[SatProblem, AnswerKey]:
     """
     Load a SAT problem from a file.
@@ -168,6 +172,7 @@ def read_from_file(filename: str) -> tuple[SatProblem, AnswerKey]:
     return problem, answer_key
 
 
+@profile.timer("sats.write_to_file")
 def write_to_file(filename: str, problem: SatProblem, answer_key: AnswerKey):
     """
     Write a SAT problem to a file.

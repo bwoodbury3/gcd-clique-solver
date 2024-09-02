@@ -1,7 +1,7 @@
 import argparse
 
 from algos import clique_solvers, sat_solvers, tsp_solvers
-from util import graphs, sats
+from util import graphs, profile, sats
 
 
 def add_solvers(
@@ -158,6 +158,12 @@ def parse_args() -> argparse.Namespace:
     Parse args.
     """
     parser = argparse.ArgumentParser(prog="main.py")
+    parser.add_argument(
+        "--profile",
+        action="store_true",
+        help="Time all of the subroutines",
+    )
+
     subparsers = parser.add_subparsers(required=True)
 
     #### CLIQUE ####
@@ -206,4 +212,10 @@ def parse_args() -> argparse.Namespace:
 
 if __name__ == "__main__":
     args = parse_args()
+    if args.profile:
+        profile.enable()
+
     args.func(args)
+
+    if profile.is_enabled():
+        profile.print_report()

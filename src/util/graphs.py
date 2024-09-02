@@ -5,7 +5,7 @@ Basic graph util
 from queue import PriorityQueue
 import random
 
-from util import fileio
+from util import fileio, profile
 
 GraphVertices = list[int]
 GraphEdges = list[tuple[int, int, int]]
@@ -43,6 +43,7 @@ class Graph:
         return s
 
 
+@profile.timer("graphs.generate_random_graph")
 def generate_random_graph(
     v: int,
     e: int,
@@ -68,6 +69,7 @@ def generate_random_graph(
     return vertices, edges
 
 
+@profile.timer("graphs.add_clique")
 def add_clique(vertices: GraphVertices, edges: GraphEdges, k: int):
     """
     Add a clique to the provided graph of the provided size.
@@ -85,6 +87,7 @@ def add_clique(vertices: GraphVertices, edges: GraphEdges, k: int):
                 edges.append(edge)
 
 
+@profile.timer("graphs.read_from_file")
 def read_from_file(filename: str) -> tuple[GraphVertices, GraphEdges]:
     """
     Read a graph from a file.
@@ -131,6 +134,7 @@ def read_from_file(filename: str) -> tuple[GraphVertices, GraphEdges]:
     return vertices, edges
 
 
+@profile.timer("graphs.write_to_file")
 def write_to_file(filename: str, vertices: GraphVertices, edges: GraphEdges):
     """
     Store the graph in a file.
@@ -149,6 +153,7 @@ def write_to_file(filename: str, vertices: GraphVertices, edges: GraphEdges):
             f.write(f"{v0} {v1} {weight}\n")
 
 
+@profile.timer("graphs.dfs")
 def dfs(graph: Graph, start_node: int, target_node: int = None) -> dict[int, int]:
     """
     Depth-first search from a start node. If target_node is specified, this

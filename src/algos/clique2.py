@@ -6,6 +6,7 @@ import json
 import math
 
 from util.graphs import GraphVertices, GraphEdges
+from util import profile
 
 
 class Clique:
@@ -28,6 +29,7 @@ class Clique:
         return str(self)
 
 
+@profile.timer("clique3.solve")
 def solve(vertices: GraphVertices, edges: GraphEdges, k: int) -> list[Clique]:
     """
     Return all cliques of size k found in the graph.

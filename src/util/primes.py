@@ -4,6 +4,8 @@ Utilities for working with prime numbers.
 
 import math
 
+from util import profile
+
 
 class MathIsBroken(ValueError):
     """
@@ -13,6 +15,7 @@ class MathIsBroken(ValueError):
     pass
 
 
+@profile.timer("primes.prime_list")
 def prime_list(n: int) -> list[int]:
     """
     Return a list of the first n unique prime numbers.
@@ -47,6 +50,7 @@ def prime_list(n: int) -> list[int]:
     return out
 
 
+@profile.timer("primes.divisors_from_prime_factors")
 def divisors_from_prime_factors(factors: list[int]) -> list[int]:
     """
     Get a list of all divisors for a number given its prime factorization. The
@@ -88,6 +92,7 @@ def divisors_from_prime_factors(factors: list[int]) -> list[int]:
     return _generate_divisors(0, 1, l_prime_counts)
 
 
+@profile.timer("primes.prime_factorization")
 def prime_factorization(num: int) -> list[int]:
     """
     Return a prime factorization for a number.
