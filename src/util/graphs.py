@@ -17,18 +17,16 @@ class Graph:
     neighbors for each vertex.
     """
 
+    @profile.timer("graphs.Graph.__init__")
     def __init__(self, vertices: GraphVertices, edges: GraphEdges):
         self.vertices = vertices
         self.edges = edges
 
-        # Construct a lookup table to map vertices to their neighbors.
-        # Each neighbor has (node, weight).
-        self.m_neighbors: dict[int, list[tuple[int, int]]] = {
-            v: [] for v in self.vertices
-        }
+        # Construct a lookup table to map vertices to their neighbor vertices.
+        self.m_neighbors: dict[int, list[int]] = {v: [] for v in self.vertices}
         for v0, v1, weight in self.edges:
-            self.m_neighbors[v0].append((v1, weight))
-            self.m_neighbors[v1].append((v0, weight))
+            self.m_neighbors[v0].append(v1)
+            self.m_neighbors[v1].append(v0)
 
         # Another lookup table for finding weights
         self.m_m_edges: dict[int, dict[int, int]] = {}
@@ -41,6 +39,47 @@ class Graph:
         for v, neighbors in self.m_neighbors.items():
             s += f"{v}: {neighbors}\n"
         return s
+
+    @profile.timer("graphs.Graph.subgraph")
+    def subgraph(
+        self,
+        vertices: GraphVertices = None,
+        edges: GraphEdges = None,
+    ) -> "Graph":
+        """
+        Construct a new subgraph with only the provided vertices/edges. If either
+        argument is None then no filter will be applied.
+
+        Args:
+            vertices: If provided, will filter the graph down to only these vertices.
+            edges: If provided, will filter the graph down to only these edges.
+
+        Return: the subgraph.
+        """
+        new_vertices = self.vertices
+        new_edges = self.edges
+
+        # Filter out the vertices that we were asked to.
+        # Filter out edges for vertices that are no longer present.
+        if vertices is not None:
+            new_vertices = [vertex for vertex in self.vertices if vertex in vertices]
+            new_edges = [
+                edge
+                for edge in self.edges
+                if edge[0] in new_vertices and edge[1] in new_vertices
+            ]
+
+        # Filter out edges that we were asked to.
+        if edges is not None:
+            new_edges = [edge for edge in self.edges if edge in edges]
+
+        return Graph(new_vertices, new_edges)
+
+    def dim(self) -> tuple[int, int]:
+        """
+        Return: the number of vertices and edges.
+        """
+        return len(self.vertices), len(self.edges)
 
 
 @profile.timer("graphs.generate_random_graph")
@@ -65,7 +104,7 @@ def generate_random_graph(
         for i in vertices
         for j in vertices[i + 1 :]
     ]
-    edges = random.choices(all_possible_edges, k=e)
+    edges = random.sample(all_possible_edges, e)
     return vertices, edges
 
 
@@ -78,13 +117,17 @@ def add_clique(vertices: GraphVertices, edges: GraphEdges, k: int):
         vertices: The vertices
         edges: The edges
         k: The clique size.
+
+    Returns: The clique that was added.
     """
-    clique_vertices = random.choices(vertices, k=k)
+    clique_vertices = random.sample(vertices, k)
+    clique_vertices.sort()
     for i in range(len(clique_vertices)):
         for j in range(i + 1, len(clique_vertices)):
             edge = (clique_vertices[i], clique_vertices[j], 1)
             if edge not in edges:
                 edges.append(edge)
+    return clique_vertices
 
 
 @profile.timer("graphs.read_from_file")
@@ -186,8 +229,8 @@ def dfs(graph: Graph, start_node: int, target_node: int = None) -> dict[int, int
 
         # Otherwise, explore all of the neighbors of this node and add them to
         # the search queue.
-        neighbors = graph.m_neighbors[node]
-        for node, weight in neighbors:
+        neighbors = graph.m_m_edges[node]
+        for node, weight in neighbors.items():
             if node not in distances:
                 q.put((weight + cur_distance, node))
 
@@ -195,6 +238,6 @@ def dfs(graph: Graph, start_node: int, target_node: int = None) -> dict[int, int
 
 
 if __name__ == "__main__":
-    v, e = generate_random_graph(20_000, 200_000)
-    add_clique(v, e, 8)
-    write_to_file("datasets/20000x200000_8clique.txt", v, e)
+    v, e = generate_random_graph(1_000, 100_000)
+    add_clique(v, e, 10)
+    write_to_file("datasets/1000x100000_10clique.txt", v, e)

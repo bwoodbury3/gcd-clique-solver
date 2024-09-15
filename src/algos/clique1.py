@@ -1,5 +1,5 @@
 """
-MAIN ENTRYPOINT.
+clique1 solver.
 """
 
 import json

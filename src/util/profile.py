@@ -23,6 +23,7 @@ class ProfiledFunction:
     """
 
 
+# Control
 TIMER_ENABLED = False
 ROOT_PROFILER = ProfiledFunction("ROOT", 0.0)
 CUR_PROFILER = ROOT_PROFILER
@@ -58,13 +59,22 @@ def is_enabled():
 @contextmanager
 def profile_context(name: str):
     """
-    Recurse
+    Profile a chunk of code as a context manager.
+
+    Args:
+        name: The name of the section of code to profile.
     """
     global CUR_PROFILER
     prev = CUR_PROFILER
 
     CUR_PROFILER = CUR_PROFILER.children.setdefault(name, ProfiledFunction(name, 0))
-    yield CUR_PROFILER
+
+    t_start = time.monotonic()
+
+    yield
+
+    t_end = time.monotonic()
+    CUR_PROFILER.t += t_end - t_start
 
     CUR_PROFILER = prev
 
@@ -72,17 +82,15 @@ def profile_context(name: str):
 def timer(name):
     """
     Timing profiler decorator.
+
+    Args:
+        name: The name of the function to profile.
     """
 
     def decorator(func):
         def wrapper(*args, **kwargs):
-            with profile_context(name) as profiler:
-                t_start = time.monotonic()
+            with profile_context(name):
                 res = func(*args, **kwargs)
-                t_end = time.monotonic()
-
-                profiler.t += t_end - t_start
-
             return res
 
         return wrapper

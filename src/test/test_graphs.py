@@ -27,6 +27,17 @@ def test_random_graph():
         assert weight >= 1 and weight <= 10
 
 
+def test_add_clique():
+    vertices, edges = graphs.generate_random_graph(20, 50)
+    clique_vertices = graphs.add_clique(vertices, edges, 10)
+
+    g = graphs.Graph(vertices, edges)
+    for v0 in clique_vertices:
+        for v1 in clique_vertices:
+            if v0 != v1:
+                assert v1 in g.m_neighbors[v0]
+
+
 def test_dfs():
     vertices, edges = graphs.read_from_file("datasets/100x400.txt")
     graph = graphs.Graph(vertices, edges)
@@ -44,3 +55,21 @@ def test_dfs():
     assert distances0[42] == distances42[0]
     assert distances0[10] == distances10[0]
     assert distances42[10] == distances10[42]
+
+
+def test_subgraph():
+    vertices, edges = graphs.read_from_file("datasets/100x400.txt")
+    graph = graphs.Graph(vertices, edges)
+
+    # Filter the graph down to only a small number of vertices.
+    new_vertices = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19]
+    graph = graph.subgraph(vertices=new_vertices)
+
+    # Assert the two lists are equal size.
+    assert graph.vertices == new_vertices
+
+    # Assert the vertices don't have any edges pointing outside the graph.
+    for vertex in graph.vertices:
+        neighbors = graph.m_neighbors[vertex]
+        for neighbor in neighbors:
+            assert neighbor in new_vertices
